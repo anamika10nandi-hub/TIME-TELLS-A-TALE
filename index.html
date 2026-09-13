@@ -1,1 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Investigation Dossier</title>
+  <style>
+    /* Global Reset & Theme */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
+    body {
+      background-color: #0b0c10;
+      color: #e0e0e0;
+      font-family: 'Courier New', Courier, monospace;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    .scene {
+      display: none;
+      width: 100vw;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    .scene.active {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* SCENE 1: Intro Video */
+    #scene-video {
+      background: #000;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    #intro-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .video-controls-overlay {
+      position: absolute;
+      bottom: 40px;
+      right: 40px;
+      z-index: 10;
+    }
+
+    .tactical-btn {
+      background: rgba(15, 15, 15, 0.85);
+      border: 1px solid #c5a059;
+      color: #f1f1f1;
+      padding: 12px 24px;
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .tactical-btn:hover {
+      background: #c5a059;
+      color: #000;
+      box-shadow: 0 0 20px rgba(197, 160, 89, 0.6);
+    }
+
+    /* SCENE 2: Written Board */
+    #scene-briefing {
+      padding: 20px;
+      background: #121316;
+    }
+
+    .board-container {
+      position: relative;
+      max-width: 1100px;
+      width: 90vw;
+      border: 6px solid #23272a;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+      border-radius: 4px;
+      overflow: hidden;
+      background: #1a1a1d;
+    }
+
+    .board-container img {
+      width: 100%;
+      display: block;
+      height: auto;
+    }
+
+    /* Arrow button at bottom right */
+    .nav-arrow-btn {
+      position: absolute;
+      bottom: 24px;
+      right: 28px;
+      background: rgba(179, 0, 0, 0.9);
+      border: 2px solid #ff4d4d;
+      color: #fff;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(255, 77, 77, 0.6);
+      transition: transform 0.2s ease, background 0.3s ease;
+      animation: pulseGlow 1.8s infinite;
+    }
+
+    .nav-arrow-btn svg {
+      width: 28px;
+      height: 28px;
+      fill: #ffffff;
+    }
+
+    .nav-arrow-btn:hover {
+      transform: scale(1.12);
+      background: #e60000;
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 8px rgba(255, 77, 77, 0.4); }
+      50% { box-shadow: 0 0 22px rgba(255, 77, 77, 0.9); }
+      100% { box-shadow: 0 0 8px rgba(255, 77, 77, 0.4); }
+    }
+
+    /* SCENE 3: Investigation Corkboard */
+    #scene-investigation {
+      padding: 40px 20px;
+      background: radial-gradient(circle, #2b231b 0%, #110d0a 100%);
+      min-height: 100vh;
+      justify-content: flex-start;
+    }
+
+    .corkboard {
+      position: relative;
+      width: 95vw;
+      max-width: 1300px;
+      min-height: 750px;
+      background-color: #3b2f23;
+      /* If you have a corkboard texture, replace the line below with:
+         background-image: url('assets/corkboard-bg.jpg'); */
+      border: 16px solid #201711;
+      border-radius: 6px;
+      box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.85), 0 20px 40px rgba(0,0,0,0.9);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: space-around;
+      align-items: center;
+      padding: 50px 30px;
+    }
+
+    /* Pinned Case File Thumbnail */
+    .case-card {
+      background: #fdfaf3;
+      color: #111;
+      padding: 10px 10px 18px 10px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      width: 240px;
+      text-align: center;
+    }
+
+    /* Pushpin effect */
+    .case-card::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 14px;
+      background: #cc0000;
+      border-radius: 50%;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
+      z-index: 2;
+    }
+
+    /* Random slight tilts for realistic pinboard look */
+    .case-card:nth-child(odd) { transform: rotate(-2.5deg); }
+    .case-card:nth-child(even) { transform: rotate(3deg); }
+    .case-card.verdict { transform: rotate(-1deg); }
+
+    .case-card:hover {
+      transform: scale(1.06) rotate(0deg);
+      box-shadow: 0 18px 30px rgba(0, 0, 0, 0.85);
+      z-index: 5;
+    }
+
+    .case-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      border: 1px solid #ddd;
+    }
+
+    .case-tag {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #7a1515;
+    }
+
+    /* Final Verdict Card distinction */
+    .case-card.verdict {
+      border: 2px dashed #990000;
+      background: #fff5f5;
+    }
+
+    .case-card.verdict .case-tag {
+      color: #b30000;
+      font-size: 0.95rem;
+      font-weight: 900;
+    }
+
+    /* Lightbox Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .modal-content img {
+      max-width: 100%;
+      max-height: 82vh;
+      border: 4px solid #fff;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+      object-fit: contain;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: -45px;
+      right: 0;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .modal-caption {
+      margin-top: 12px;
+      color: #d1d1d1;
+      font-size: 1rem;
+      letter-spacing: 1.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SCENE 1: Intro Video -->
+  <section id="scene-video" class="scene active">
+    <!-- Replace 'assets/intro-video.mp4' with your video file -->
+    <video id="intro-video" playsinline preload="auto">
+      <source src="assets/intro-video.mp4" type="video/mp4" />
+      Your browser does not support HTML5 video.
+    </video>
+    <div class="video-controls-overlay">
+      <button class="tactical-btn" id="btn-to-briefing">Proceed to Briefing &rarr;</button>
+    </div>
+  </section>
+
+  <!-- SCENE 2: Written Board -->
+  <section id="scene-briefing" class="scene">
+    <div class="board-container">
+      <!-- Replace 'assets/written-board.png' with your written board image -->
+      <img src="assets/written-board.png" alt="Case Briefing Written Board" />
+      
+      <!-- Interactive Arrow leading to Scene 3 -->
+      <button class="nav-arrow-btn" id="btn-to-board" title="Open Investigation Board">
+        <svg viewBox="0 0 24 24">
+          <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- SCENE 3: Investigation Board -->
+  <section id="scene-investigation" class="scene">
+    <div class="corkboard">
+      
+      <!-- Case 01 -->
+      <div class="case-card" data-full="assets/case-1.jpg" data-title="CASE FILE #001: INITIAL REPORT">
+        <img src="assets/case-1.jpg" alt="Case 01 Thumbnail" />
+        <div class="case-tag">Case #001</div>
+      </div>
+
+      <!-- Case 02 -->
+      <div class="case-card" data-full="assets/case-2.jpg" data-title="CASE FILE #002: WITNESS TESTIMONY">
+        <img src="assets/case-2.jpg" alt="Case 02 Thumbnail" />
+        <div class="case-tag">Case #002</div>
+      </div>
+
+      <!-- Case 03 -->
+      <div class="case-card" data-full="assets/case-3.jpg" data-title="CASE FILE #003: PHYSICAL EVIDENCE">
+        <img src="assets/case-3.jpg" alt="Case 03 Thumbnail" />
+        <div class="case-tag">Case #003</div>
+      </div>
+
+      <!-- Final Verdict -->
+      <div class="case-card verdict" data-full="assets/final-verdict.jpg" data-title="FINAL VERDICT: JUDICIAL OUTCOME">
+        <img src="assets/final-verdict.jpg" alt="Final Verdict Thumbnail" />
+        <div class="case-tag">&#9888; Final Verdict</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Case File Modal / Lightbox -->
+  <div class="modal-overlay" id="file-modal">
+    <div class="modal-content">
+      <button class="modal-close-btn" id="modal-close">&times; CLOSE</button>
+      <img id="modal-img" src="" alt="Case File Preview" />
+      <div class="modal-caption" id="modal-caption"></div>
+    </div>
+  </div>
+
+  <script>
+    // Navigation State Manager
+    const sceneVideo = document.getElementById('scene-video');
+    const sceneBriefing = document.getElementById('scene-briefing');
+    const sceneInvestigation = document.getElementById('scene-investigation');
+
+    const btnToBriefing = document.getElementById('btn-to-briefing');
+    const btnToBoard = document.getElementById('btn-to-board');
+    const video = document.getElementById('intro-video');
+
+    function switchScene(fromScene, toScene) {
+      fromScene.classList.remove('active');
+      toScene.classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    // Auto-advance or allow manual advance on video finish
+    video.addEventListener('ended', () => {
+      btnToBriefing.textContent = 'Enter Briefing \u2192';
+    });
+
+    btnToBriefing.addEventListener('click', () => {
+      video.pause();
+      switchScene(sceneVideo, sceneBriefing);
+    });
+
+    btnToBoard.addEventListener('click', () => {
+      switchScene(sceneBriefing, sceneInvestigation);
+    });
+
+    // Lightbox / Modal for Case Files
+    const modal = document.getElementById('file-modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalCaption = document.getElementById('modal-caption');
+    const modalClose = document.getElementById('modal-close');
+
+    document.querySelectorAll('.case-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const fullSrc = card.getAttribute('data-full');
+        const title = card.getAttribute('data-title');
+        
+        modalImg.src = fullSrc;
+        modalCaption.textContent = title;
+        modal.classList.add('active');
+      });
+    });
+
+    function closeModal() {
+      modal.classList.remove('active');
+      modalImg.src = '';
+      modalCaption.textContent = '';
+    }
+
+    modalClose.addEventListener('click', closeModal);
+
+    // Close modal on outside click or ESC key
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
