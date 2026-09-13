@@ -80,7 +80,7 @@
       box-shadow: 0 0 18px rgba(197, 160, 89, 0.6);
     }
 
-    /* SCENE 2: Written Board (Edge-to-Edge Fullscreen) */
+    /* SCENE 2: Written Board (Case Introduction) */
     #scene-briefing {
       position: relative;
       width: 100vw;
@@ -96,38 +96,28 @@
       user-select: none;
     }
 
-    /* Exact Invisible/Seamless Arrow Button overlaying the paper's arrow */
+    /* Invisible click hotspot mapped directly over the printed arrow */
     .paper-arrow-btn {
       position: absolute;
-      top: 86.8%;
-      left: 59.5%;
-      width: 3.5%;
-      height: 6.5%;
+      top: 87.5%;
+      left: 59.8%;
+      width: 3.8%;
+      height: 5.2%;
       background: transparent;
       border: none;
       outline: none;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 20;
-      transition: transform 0.2s ease;
+      z-index: 50;
+      border-radius: 4px;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .paper-arrow-btn svg {
-      width: 100%;
-      height: 100%;
-      fill: #111;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-      transition: transform 0.2s ease, fill 0.2s ease;
+    .paper-arrow-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
     }
 
-    .paper-arrow-btn:hover svg {
-      transform: translateX(4px);
-      fill: #a00;
-    }
-
-    /* SCENE 3: Investigation Board (Edge-to-Edge Fullscreen) */
+    /* SCENE 3: Investigation Board */
     #scene-investigation {
       position: relative;
       width: 100vw;
@@ -143,7 +133,7 @@
       user-select: none;
     }
 
-    /* Interactive Clickable Hotspots mapped directly onto image_1be861.jpg */
+    /* Interactive Clickable Hotspots mapped directly over the cases */
     .case-hotspot {
       position: absolute;
       cursor: pointer;
@@ -234,12 +224,8 @@
   <section id="scene-briefing" class="scene">
     <img class="briefing-bg" src="image/Case%20Introduction/Case%20Introduction.png" alt="Case Introduction" />
     
-    <!-- Seamless black arrow button right over the document's arrow -->
-    <button class="paper-arrow-btn" id="btn-to-board" title="Open Investigation Board">
-      <svg viewBox="0 0 24 24">
-        <path d="M4 10.5h11.5V6l7.5 6-7.5 6v-4.5H4z" />
-      </svg>
-    </button>
+    <!-- Seamless invisible hotspot right over your printed arrow -->
+    <button class="paper-arrow-btn" id="btn-to-board" title="Open Investigation Board"></button>
   </section>
 
   <!-- SCENE 3: Criminal Investigation Board -->
