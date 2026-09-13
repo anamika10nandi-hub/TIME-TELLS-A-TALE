@@ -2,19 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Time Tells A Tale - Investigation Dossier</title>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body, html {
       width: 100%;
       height: 100%;
-      background-color: #000;
+      background-color: #050608;
       color: #e0e0e0;
       font-family: 'Courier New', Courier, monospace;
       overflow: hidden;
@@ -28,16 +29,30 @@
       top: 0;
       left: 0;
       overflow: hidden;
+      align-items: center;
+      justify-content: center;
+      background: #000;
     }
 
     .scene.active {
-      display: block;
-      animation: fadeIn 0.4s ease-in-out forwards;
+      display: flex;
+      animation: fadeIn 0.35s ease-in-out forwards;
     }
 
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
+    }
+
+    /* ASPECT RATIO STAGE CONTAINER (Locks 16:9 so hotspots NEVER drift) */
+    .responsive-stage {
+      position: relative;
+      width: 100vw;
+      height: 56.25vw; /* 16:9 aspect ratio */
+      max-height: 100vh;
+      max-width: 177.78vh; /* 16:9 based on viewport height */
+      margin: auto;
+      background-color: #000;
     }
 
     /* SCENE 1: Intro Video */
@@ -46,52 +61,50 @@
     }
 
     #intro-video {
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       display: block;
     }
 
     .video-controls-overlay {
       position: absolute;
-      bottom: 25px;
-      right: 25px;
-      z-index: 10;
+      bottom: 20px;
+      right: 20px;
+      z-index: 20;
       display: flex;
-      gap: 12px;
+      gap: 10px;
     }
 
     .tactical-btn {
-      background: rgba(10, 10, 10, 0.85);
+      background: rgba(10, 10, 10, 0.88);
       border: 1px solid #c5a059;
       color: #f1f1f1;
-      padding: 10px 20px;
-      font-size: 0.85rem;
-      letter-spacing: 2px;
+      padding: 10px 18px;
+      font-size: 0.82rem;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       cursor: pointer;
       box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
-      transition: all 0.3s ease;
+      transition: all 0.25s ease;
+      font-family: inherit;
     }
 
-    .tactical-btn:hover {
+    .tactical-btn:hover, .tactical-btn:active {
       background: #c5a059;
       color: #000;
       box-shadow: 0 0 18px rgba(197, 160, 89, 0.6);
     }
 
-    /* SCENE 2: Written Board (Case Introduction) */
+    /* SCENE 2: Case Introduction */
     #scene-briefing {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      background: #000;
+      background: #090a0d;
     }
 
     .briefing-bg {
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
       display: block;
       user-select: none;
     }
@@ -99,10 +112,10 @@
     /* Invisible click hotspot mapped directly over the printed arrow */
     .paper-arrow-btn {
       position: absolute;
-      top: 87.5%;
+      top: 87.2%;
       left: 59.8%;
-      width: 3.8%;
-      height: 5.2%;
+      width: 4.2%;
+      height: 5.8%;
       background: transparent;
       border: none;
       outline: none;
@@ -112,23 +125,20 @@
       transition: background-color 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .paper-arrow-btn:hover {
-      background: rgba(255, 255, 255, 0.15);
-      box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+    .paper-arrow-btn:hover, .paper-arrow-btn:active {
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 14px rgba(255, 255, 255, 0.5);
     }
 
     /* SCENE 3: Investigation Board */
     #scene-investigation {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      background: #000;
+      background: #050608;
     }
 
     .board-bg {
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
       display: block;
       user-select: none;
     }
@@ -142,35 +152,36 @@
       background-color: rgba(255, 255, 255, 0);
     }
 
-    .case-hotspot:hover {
-      background-color: rgba(255, 255, 255, 0.12);
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    .case-hotspot:hover, .case-hotspot:active {
+      background-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.45);
     }
 
-    /* Review Again Button at bottom right */
+    /* Review Again Button */
     .btn-review-again {
       position: absolute;
-      bottom: 25px;
-      right: 25px;
+      bottom: 15px;
+      right: 15px;
       z-index: 60;
-      background: rgba(12, 12, 14, 0.92);
+      background: rgba(12, 12, 14, 0.94);
       border: 1px solid #c5a059;
       color: #f5f5f5;
-      padding: 12px 22px;
-      font-size: 0.85rem;
-      letter-spacing: 2px;
+      padding: 9px 16px;
+      font-size: 0.78rem;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8), 0 0 10px rgba(197, 160, 89, 0.25);
       transition: all 0.3s ease;
+      font-family: inherit;
     }
 
     .btn-review-again svg {
-      width: 18px;
-      height: 18px;
+      width: 15px;
+      height: 15px;
       fill: none;
       stroke: #c5a059;
       stroke-width: 2.2;
@@ -179,16 +190,35 @@
       transition: transform 0.4s ease;
     }
 
-    .btn-review-again:hover {
+    .btn-review-again:hover, .btn-review-again:active {
       background: #c5a059;
       color: #0b0c10;
       box-shadow: 0 0 20px rgba(197, 160, 89, 0.7);
-      transform: translateY(-2px);
     }
 
     .btn-review-again:hover svg {
       stroke: #0b0c10;
       transform: rotate(-180deg);
+    }
+
+    /* Mobile Rotate Device Badge */
+    .rotate-hint {
+      display: none;
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 15, 18, 0.88);
+      border: 1px solid rgba(197, 160, 89, 0.6);
+      color: #c5a059;
+      padding: 6px 14px;
+      font-size: 0.68rem;
+      letter-spacing: 1px;
+      border-radius: 20px;
+      z-index: 80;
+      pointer-events: none;
+      white-space: nowrap;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
     }
 
     /* Fullscreen Modal Lightbox */
@@ -199,12 +229,13 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(0, 0, 0, 0.92);
-      backdrop-filter: blur(6px);
+      background: rgba(0, 0, 0, 0.94);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       z-index: 1000;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 15px;
     }
 
     .modal-overlay.active {
@@ -213,48 +244,83 @@
 
     .modal-content {
       position: relative;
-      max-width: 90vw;
-      max-height: 90vh;
+      max-width: 95vw;
+      max-height: 92vh;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
     }
 
     .modal-content img {
       max-width: 100%;
-      max-height: 84vh;
-      border: 3px solid #222;
+      max-height: 80vh;
+      border: 2px solid #333;
       box-shadow: 0 0 40px rgba(0, 0, 0, 0.95);
       object-fit: contain;
     }
 
     .modal-close-btn {
       position: absolute;
-      top: -40px;
+      top: -38px;
       right: 0;
-      background: transparent;
-      border: none;
+      background: rgba(20, 20, 20, 0.85);
+      border: 1px solid #555;
       color: #fff;
-      font-size: 1.2rem;
+      font-size: 0.9rem;
+      padding: 4px 12px;
       cursor: pointer;
       font-family: inherit;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
+      border-radius: 3px;
     }
 
     .modal-caption {
-      margin-top: 10px;
+      margin-top: 8px;
       color: #d1d1d1;
-      font-size: 1rem;
-      letter-spacing: 2px;
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
+      text-align: center;
+    }
+
+    /* MEDIA QUERIES FOR PHONES & VERTICAL VIEWPORTS */
+    @media (orientation: portrait) and (max-width: 768px) {
+      .rotate-hint {
+        display: block;
+      }
+      .video-controls-overlay {
+        bottom: 16px;
+        right: 16px;
+      }
+      .tactical-btn {
+        padding: 8px 14px;
+        font-size: 0.75rem;
+      }
+      .btn-review-again {
+        bottom: 10px;
+        right: 10px;
+        padding: 8px 14px;
+        font-size: 0.7rem;
+      }
     }
   </style>
 </head>
 <body>
 
+  <!-- Rotate Helper for Mobile Portrait -->
+  <div class="rotate-hint" id="rotate-hint">⟳ Rotate device for wider view</div>
+
   <!-- SCENE 1: Intro Video -->
   <section id="scene-video" class="scene active">
-    <video id="intro-video" autoplay muted playsinline preload="auto" controls>
+    <video 
+      id="intro-video" 
+      autoplay 
+      muted 
+      playsinline 
+      webkit-playsinline
+      preload="auto" 
+      controls>
       <source src="video/intro%20video/intro%20video.mp4" type="video/mp4" />
       Your browser does not support HTML5 video.
     </video>
@@ -266,67 +332,61 @@
 
   <!-- SCENE 2: Case Introduction -->
   <section id="scene-briefing" class="scene">
-    <img class="briefing-bg" src="image/Case%20Introduction/Case%20Introduction.png" alt="Case Introduction" />
-    
-    <!-- Seamless invisible hotspot right over your printed arrow -->
-    <button class="paper-arrow-btn" id="btn-to-board" title="Open Investigation Board"></button>
+    <div class="responsive-stage">
+      <img class="briefing-bg" src="image/Case%20Introduction/Case%20Introduction.png" alt="Case Introduction" />
+      
+      <!-- Seamless invisible hotspot mapped directly over the printed arrow -->
+      <button class="paper-arrow-btn" id="btn-to-board" title="Open Investigation Board"></button>
+    </div>
   </section>
 
   <!-- SCENE 3: Criminal Investigation Board -->
   <section id="scene-investigation" class="scene">
-    <img class="board-bg" src="image/case%20board/case%20board.png" alt="Criminal Investigation Board" />
+    <div class="responsive-stage">
+      <img class="board-bg" src="image/case%20board/case%20board.png" alt="Criminal Investigation Board" />
 
-    <!-- ROW 1 (Cases 1 - 4) -->
-    <!-- Case 1: The Victim Disappears -->
-    <div class="case-hotspot" style="top: 11.5%; left: 29.0%; width: 13.0%; height: 26.5%;"
-         data-full="image/Case/Case%20%23001.png" data-title="Case #001: The Victim Disappears"></div>
+      <!-- ROW 1 (Cases 1 - 4) -->
+      <div class="case-hotspot" style="top: 11.5%; left: 29.0%; width: 13.0%; height: 26.5%;"
+           data-full="image/Case/Case%20%23001.png" data-title="Case #001: The Victim Disappears"></div>
 
-    <!-- Case 2: The Double Identity -->
-    <div class="case-hotspot" style="top: 12.0%; left: 43.6%; width: 13.4%; height: 26.5%;"
-         data-full="image/Case/Case%20%23002.png" data-title="Case #002: The Double Identity"></div>
+      <div class="case-hotspot" style="top: 12.0%; left: 43.6%; width: 13.4%; height: 26.5%;"
+           data-full="image/Case/Case%20%23002.png" data-title="Case #002: The Double Identity"></div>
 
-    <!-- Case 3: The Ecosystem Conspiracy -->
-    <div class="case-hotspot" style="top: 12.0%; left: 58.4%; width: 13.7%; height: 26.5%;"
-         data-full="image/Case/Case%20%23003.png" data-title="Case #003: The Ecosystem Conspiracy"></div>
+      <div class="case-hotspot" style="top: 12.0%; left: 58.4%; width: 13.7%; height: 26.5%;"
+           data-full="image/Case/Case%20%23003.png" data-title="Case #003: The Ecosystem Conspiracy"></div>
 
-    <!-- Case 4: The Luxury Alibi -->
-    <div class="case-hotspot" style="top: 11.8%; left: 73.2%; width: 13.2%; height: 26.5%;"
-         data-full="image/Case/Case%20%23004.png" data-title="Case #004: The Luxury Alibi"></div>
+      <div class="case-hotspot" style="top: 11.8%; left: 73.2%; width: 13.2%; height: 26.5%;"
+           data-full="image/Case/Case%20%23004.png" data-title="Case #004: The Luxury Alibi"></div>
 
-    <!-- ROW 2 (Cases 5 - 8) -->
-    <!-- Case 5: The Postmodern Impostors -->
-    <div class="case-hotspot" style="top: 40.5%; left: 19.0%; width: 14.8%; height: 25.5%;"
-         data-full="image/Case/Case%20%23005.png" data-title="Case #005: The Postmodern Impostors"></div>
+      <!-- ROW 2 (Cases 5 - 8) -->
+      <div class="case-hotspot" style="top: 40.5%; left: 19.0%; width: 14.8%; height: 25.5%;"
+           data-full="image/Case/Case%20%23005.png" data-title="Case #005: The Postmodern Impostors"></div>
 
-    <!-- Case 6: The Material Witnesses -->
-    <div class="case-hotspot" style="top: 41.0%; left: 35.0%; width: 16.5%; height: 25.5%;"
-         data-full="image/Case/Case%20%23006.png" data-title="Case #006: The Material Witnesses"></div>
+      <div class="case-hotspot" style="top: 41.0%; left: 35.0%; width: 16.5%; height: 25.5%;"
+           data-full="image/Case/Case%20%23006.png" data-title="Case #006: The Material Witnesses"></div>
 
-    <!-- Case 7: The Sustainability Interrogation -->
-    <div class="case-hotspot" style="top: 41.5%; left: 53.0%; width: 17.5%; height: 25.5%;"
-         data-full="image/Case/Case%20%23007.png" data-title="Case #007: The Sustainability Interrogation"></div>
+      <div class="case-hotspot" style="top: 41.5%; left: 53.0%; width: 17.5%; height: 25.5%;"
+           data-full="image/Case/Case%20%23007.png" data-title="Case #007: The Sustainability Interrogation"></div>
 
-    <!-- Case 8: The Digital Archive Break-In -->
-    <div class="case-hotspot" style="top: 41.5%; left: 71.8%; width: 15.5%; height: 25.5%;"
-         data-full="image/Case/Case%20%23008.png" data-title="Case #008: The Digital Archive Break-In"></div>
+      <div class="case-hotspot" style="top: 41.5%; left: 71.8%; width: 15.5%; height: 25.5%;"
+           data-full="image/Case/Case%20%23008.png" data-title="Case #008: The Digital Archive Break-In"></div>
 
-    <!-- ROW 3 (Case 9 & The Verdict) -->
-    <!-- Case 9: The Human Cost -->
-    <div class="case-hotspot" style="top: 68.5%; left: 22.5%; width: 15.2%; height: 25.0%;"
-         data-full="image/Case/Case%20%23009.png" data-title="Case #009: The Human Cost"></div>
+      <!-- ROW 3 (Case 9 & The Verdict) -->
+      <div class="case-hotspot" style="top: 68.5%; left: 22.5%; width: 15.2%; height: 25.0%;"
+           data-full="image/Case/Case%20%23009.png" data-title="Case #009: The Human Cost"></div>
 
-    <!-- The Verdict -->
-    <div class="case-hotspot" style="top: 68.5%; left: 38.5%; width: 23.8%; height: 25.0%;"
-         data-full="image/The%20verdict/The%20verdict.png" data-title="Final Verdict: Identity Theft"></div>
+      <div class="case-hotspot" style="top: 68.5%; left: 38.5%; width: 23.8%; height: 25.0%;"
+           data-full="image/The%20verdict/The%20verdict.png" data-title="Final Verdict: Identity Theft"></div>
 
-    <!-- Circular Review Again Button -->
-    <button class="btn-review-again" id="btn-review-again">
-      <svg viewBox="0 0 24 24">
-        <path d="M1 4v6h6M23 20v-6h-6"/>
-        <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
-      </svg>
-      Review Again
-    </button>
+      <!-- Circular Review Again Button -->
+      <button class="btn-review-again" id="btn-review-again">
+        <svg viewBox="0 0 24 24">
+          <path d="M1 4v6h6M23 20v-6h-6"/>
+          <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+        </svg>
+        Review Again
+      </button>
+    </div>
   </section>
 
   <!-- Fullscreen Modal Lightbox -->
@@ -349,18 +409,26 @@
     const video = document.getElementById('intro-video');
     const unmuteBtn = document.getElementById('btn-unmute');
 
-    // Force browser playback attempt
+    // Force browser and mobile webkit playback attempt
     function triggerVideoPlayback() {
       video.muted = true;
       const playPromise = video.play();
       if (playPromise !== undefined) {
-        playPromise.catch(error => {
-          console.warn("Autoplay blocked by browser. Click anywhere to start:", error);
+        playPromise.catch(() => {
+          // Autoplay blocked by mobile browser until touch
         });
       }
     }
 
     window.addEventListener('DOMContentLoaded', triggerVideoPlayback);
+    
+    // Tap anywhere on scene to trigger playback on mobile
+    sceneVideo.addEventListener('touchstart', (e) => {
+      if (e.target !== btnToBriefing && e.target !== unmuteBtn) {
+        if (video.paused) video.play();
+      }
+    }, { passive: true });
+
     sceneVideo.addEventListener('click', (e) => {
       if (e.target !== btnToBriefing && e.target !== unmuteBtn) {
         if (video.paused) video.play();
