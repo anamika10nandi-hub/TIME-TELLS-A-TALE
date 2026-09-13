@@ -308,9 +308,8 @@
 
   <!-- SCENE 1: Intro Video -->
   <section id="scene-video" class="scene active">
-    <!-- video attributes: controls enabled as fallback so user can hit play manually if blocked -->
     <video id="intro-video" autoplay muted playsinline preload="auto" controls>
-      <source src="./video/intro%20video/intro%20video.mp4" type="video/mp4" />
+      <source src="video/intro%20video/intro%20video.mp4" type="video/mp4" />
       Your browser does not support HTML5 video.
     </video>
     <div class="video-controls-overlay">
@@ -322,8 +321,7 @@
   <!-- SCENE 2: Written Board -->
   <section id="scene-briefing" class="scene">
     <div class="board-container">
-      <!-- Relative path using explicit ./ and URL encoded spaces -->
-      <img id="briefing-img" src="./Case%20Introduction/Case%20Introduction.png" alt="Case Introduction" />
+      <img id="briefing-img" src="image/Case%20Introduction/Case%20Introduction.png" alt="Case Introduction" />
       <button class="nav-arrow-btn" id="btn-to-board" title="Access Investigation Board">
         <svg viewBox="0 0 24 24">
           <path d="M5 12h14M12 5l7 7-7 7" />
@@ -338,62 +336,62 @@
     
     <div class="corkboard">
       
-      <!-- Cases 001 - 009 -->
-      <div class="case-card" data-full="./Case/Case%20%23001.png" data-title="Case #001">
-        <img src="./Case/Case%20%23001.png" alt="Case #001" />
+      <!-- Cases 001 - 009 inside image/Case/ -->
+      <div class="case-card" data-full="image/Case/Case%20%23001.png" data-title="Case #001">
+        <img src="image/Case/Case%20%23001.png" alt="Case #001" />
         <div class="case-tag">Case #001</div>
       </div>
 
-      <div class="case-card" data-full="./Case/Case%20%23002.png" data-title="Case #002">
-        <img src="./Case/Case%20%23002.png" alt="Case #002" />
+      <div class="case-card" data-full="image/Case/Case%20%23002.png" data-title="Case #002">
+        <img src="image/Case/Case%20%23002.png" alt="Case #002" />
         <div class="case-tag">Case #002</div>
       </div>
 
-      <div class="case-card" data-full="./Case/Case%20%23003.png" data-title="Case #003">
-        <img src="./Case/Case%20%23003.png" alt="Case #003" />
+      <div class="case-card" data-full="image/Case/Case%20%23003.png" data-title="Case #003">
+        <img src="image/Case/Case%20%23003.png" alt="Case #003" />
         <div class="case-tag">Case #003</div>
       </div>
 
-      <div class="case-card" data-full="./Case/Case%20%23004.png" data-title="Case #004">
-        <img src="./Case/Case%20%23004.png" alt="Case #004" />
+      <div class="case-card" data-full="image/Case/Case%20%23004.png" data-title="Case #004">
+        <img src="image/Case/Case%20%23004.png" alt="Case #004" />
         <div class="case-tag">Case #004</div>
       </div>
 
-      <div class="case-card" data-full="./Case/Case%20%23005.png" data-title="Case #005">
-        <img src="./Case/Case%20%23005.png" alt="Case #005" />
+      <div class="case-card" data-full="image/Case/Case%20%23005.png" data-title="Case #005">
+        <img src="image/Case/Case%20%23005.png" alt="Case #005" />
         <div class="case-tag">Case #005</div>
       </div>
 
-      <div class="case-card" data-full="./Case/Case%20%23006.png" data-title="Case #006">
-        <img src="./Case/Case%20%23006.png" alt="Case #006" />
+      <div class="case-card" data-full="image/Case/Case%20%23006.png" data-title="Case #006">
+        <img src="image/Case/Case%20%23006.png" alt="Case #006" />
         <div class="case-tag">Case #006</div>
       </div>
 
-      <div class="case-card" data-full="./Case/Case%20%23007.png" data-title="Case #007">
-        <img src="./Case/Case%20%23007.png" alt="Case #007" />
+      <div class="case-card" data-full="image/Case/Case%20%23007.png" data-title="Case #007">
+        <img src="image/Case/Case%20%23007.png" alt="Case #007" />
         <div class="case-tag">Case #007</div>
       </div>
 
-      <div class="case-card" data-full="./Case/Case%20%23008.png" data-title="Case #008">
-        <img src="./Case/Case%20%23008.png" alt="Case #008" />
+      <div class="case-card" data-full="image/Case/Case%20%23008.png" data-title="Case #008">
+        <img src="image/Case/Case%20%23008.png" alt="Case #008" />
         <div class="case-tag">Case #008</div>
       </div>
 
-      <div class="case-card" data-full="./Case/Case%20%23009.png" data-title="Case #009">
-        <img src="./Case/Case%20%23009.png" alt="Case #009" />
+      <div class="case-card" data-full="image/Case/Case%20%23009.png" data-title="Case #009">
+        <img src="image/Case/Case%20%23009.png" alt="Case #009" />
         <div class="case-tag">Case #009</div>
       </div>
 
-      <!-- The Verdict -->
-      <div class="case-card verdict" data-full="./The%20verdict/The%20verdict.png" data-title="Final Verdict">
-        <img src="./The%20verdict/The%20verdict.png" alt="The Verdict" />
+      <!-- The Verdict inside image/The verdict/ -->
+      <div class="case-card verdict" data-full="image/The%20verdict/The%20verdict.png" data-title="Final Verdict">
+        <img src="image/The%20verdict/The%20verdict.png" alt="The Verdict" />
         <div class="case-tag">&#9888; The Verdict</div>
       </div>
 
     </div>
   </section>
 
-  <!-- Modal Lightbox -->
+  <!-- Fullscreen Modal Lightbox -->
   <div class="modal-overlay" id="file-modal">
     <div class="modal-content">
       <button class="modal-close-btn" id="modal-close">&times; CLOSE</button>
@@ -412,24 +410,21 @@
     const video = document.getElementById('intro-video');
     const unmuteBtn = document.getElementById('btn-unmute');
 
-    // Force browser play attempt
+    // Force browser playback attempt
     function triggerVideoPlayback() {
       video.muted = true;
       const playPromise = video.play();
       if (playPromise !== undefined) {
         playPromise.catch(error => {
-          console.warn("Autoplay blocked by browser. User interaction required:", error);
+          console.warn("Autoplay blocked by browser. Click anywhere to start:", error);
         });
       }
     }
 
     window.addEventListener('DOMContentLoaded', triggerVideoPlayback);
-    // Click anywhere on the video scene to play if browser blocked autoplay
     sceneVideo.addEventListener('click', (e) => {
       if (e.target !== btnToBriefing && e.target !== unmuteBtn) {
-        if (video.paused) {
-          video.play();
-        }
+        if (video.paused) video.play();
       }
     });
 
@@ -439,7 +434,7 @@
       window.scrollTo(0, 0);
     }
 
-    // Audio toggling
+    // Audio toggle
     unmuteBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       video.muted = !video.muted;
@@ -458,7 +453,7 @@
       switchScene(sceneBriefing, sceneInvestigation);
     });
 
-    // Modal Lightbox
+    // Modal Lightbox for Case Files
     const modal = document.getElementById('file-modal');
     const modalImg = document.getElementById('modal-img');
     const modalCaption = document.getElementById('modal-caption');
@@ -490,13 +485,6 @@
       if (e.key === 'Escape' && modal.classList.contains('active')) {
         closeModal();
       }
-    });
-
-    // Diagnostics: Print any broken image to the console with its exact attempted URL
-    document.querySelectorAll('img').forEach(img => {
-      img.addEventListener('error', () => {
-        console.error("Failed to load file at exact URL:", img.src);
-      });
     });
   </script>
 </body>
