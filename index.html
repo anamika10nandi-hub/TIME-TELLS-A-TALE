@@ -31,9 +31,7 @@
     }
 
     .scene.active {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: block;
       animation: fadeIn 0.4s ease-in-out forwards;
     }
 
@@ -48,9 +46,10 @@
     }
 
     #intro-video {
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       object-fit: cover;
+      display: block;
     }
 
     .video-controls-overlay {
@@ -81,98 +80,84 @@
       box-shadow: 0 0 18px rgba(197, 160, 89, 0.6);
     }
 
-    /* SCENE 2: Case Introduction (Full Screen Aspect Box) */
+    /* SCENE 2: Written Board (Edge-to-Edge Fullscreen) */
     #scene-briefing {
-      background: #0b0c10;
-    }
-
-    .briefing-stage {
       position: relative;
       width: 100vw;
-      height: 56.25vw; /* 16:9 aspect ratio locked */
-      max-height: 100vh;
-      max-width: 177.78vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .briefing-stage img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: block;
-      user-select: none;
-    }
-
-    /* Black Arrow button overlapping the printed arrow on the paper */
-    .paper-arrow-btn {
-      position: absolute;
-      bottom: 16%;
-      left: 58.6%;
-      width: 3.2%;
-      height: 5.5%;
-      background: rgba(0, 0, 0, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
-      transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s;
-      z-index: 5;
-    }
-
-    .paper-arrow-btn svg {
-      width: 65%;
-      height: 65%;
-      fill: #ffffff;
-    }
-
-    .paper-arrow-btn:hover {
-      transform: scale(1.18);
-      background: #111;
-      box-shadow: 0 0 14px rgba(255, 255, 255, 0.6);
-    }
-
-    /* SCENE 3: Investigation Board (Full Screen) */
-    #scene-investigation {
+      height: 100vh;
       background: #000;
     }
 
-    .board-stage {
-      position: relative;
+    .briefing-bg {
       width: 100vw;
-      height: 56.25vw; /* 16:9 ratio locked so hot-spots stay aligned on all screens */
-      max-height: 100vh;
-      max-width: 177.78vh;
-    }
-
-    .board-stage img.board-bg {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
+      height: 100vh;
+      object-fit: cover;
       display: block;
       user-select: none;
     }
 
-    /* Interactive Clickable Hotspots mapped over each pinned photo */
+    /* Exact Invisible/Seamless Arrow Button overlaying the paper's arrow */
+    .paper-arrow-btn {
+      position: absolute;
+      top: 86.8%;
+      left: 59.5%;
+      width: 3.5%;
+      height: 6.5%;
+      background: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      transition: transform 0.2s ease;
+    }
+
+    .paper-arrow-btn svg {
+      width: 100%;
+      height: 100%;
+      fill: #111;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+      transition: transform 0.2s ease, fill 0.2s ease;
+    }
+
+    .paper-arrow-btn:hover svg {
+      transform: translateX(4px);
+      fill: #a00;
+    }
+
+    /* SCENE 3: Investigation Board (Edge-to-Edge Fullscreen) */
+    #scene-investigation {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: #000;
+    }
+
+    .board-bg {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      display: block;
+      user-select: none;
+    }
+
+    /* Interactive Clickable Hotspots mapped directly onto image_1be861.jpg */
     .case-hotspot {
       position: absolute;
       cursor: pointer;
       border-radius: 4px;
-      transition: all 0.25s ease;
-      background: rgba(255, 255, 255, 0.0);
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+      background-color: rgba(255, 255, 255, 0);
     }
 
     .case-hotspot:hover {
-      background: rgba(255, 220, 100, 0.12);
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.45);
-      transform: scale(1.03);
+      background-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
     }
 
-    /* Lightbox Modal */
+    /* Fullscreen Modal Lightbox */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -245,58 +230,64 @@
     </div>
   </section>
 
-  <!-- SCENE 2: Written Board (Case Introduction) -->
+  <!-- SCENE 2: Case Introduction -->
   <section id="scene-briefing" class="scene">
-    <div class="briefing-stage">
-      <img src="image/Case%20Introduction/Case%20Introduction.png" alt="Case Introduction" />
-      
-      <!-- Black Arrow Button overlapping the printed arrow on the paper -->
-      <button class="paper-arrow-btn" id="btn-to-board" title="Open Criminal Investigation Board">
-        <svg viewBox="0 0 24 24">
-          <path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        </svg>
-      </button>
-    </div>
+    <img class="briefing-bg" src="image/Case%20Introduction/Case%20Introduction.png" alt="Case Introduction" />
+    
+    <!-- Seamless black arrow button right over the document's arrow -->
+    <button class="paper-arrow-btn" id="btn-to-board" title="Open Investigation Board">
+      <svg viewBox="0 0 24 24">
+        <path d="M4 10.5h11.5V6l7.5 6-7.5 6v-4.5H4z" />
+      </svg>
+    </button>
   </section>
 
   <!-- SCENE 3: Criminal Investigation Board -->
   <section id="scene-investigation" class="scene">
-    <div class="board-stage">
-      <!-- Fullscreen investigation board visual -->
-      <img class="board-bg" src="image/case%20board/case%20board.png" alt="Criminal Investigation Board" />
+    <img class="board-bg" src="image/case%20board/case%20board.png" alt="Criminal Investigation Board" />
 
-      <!-- ROW 1 HOTSPOTS (Cases 001 - 005) -->
-      <div class="case-hotspot" style="top: 22%; left: 10.5%; width: 14.8%; height: 32%;"
-           data-full="image/Case/Case%20%23001.png" data-title="Case #001"></div>
+    <!-- ROW 1 (Cases 1 - 4) -->
+    <!-- Case 1: The Victim Disappears -->
+    <div class="case-hotspot" style="top: 11.5%; left: 29.0%; width: 13.0%; height: 26.5%;"
+         data-full="image/Case/Case%20%23001.png" data-title="Case #001: The Victim Disappears"></div>
 
-      <div class="case-hotspot" style="top: 22%; left: 26.8%; width: 14.8%; height: 32%;"
-           data-full="image/Case/Case%20%23002.png" data-title="Case #002"></div>
+    <!-- Case 2: The Double Identity -->
+    <div class="case-hotspot" style="top: 12.0%; left: 43.6%; width: 13.4%; height: 26.5%;"
+         data-full="image/Case/Case%20%23002.png" data-title="Case #002: The Double Identity"></div>
 
-      <div class="case-hotspot" style="top: 22%; left: 42.6%; width: 14.8%; height: 32%;"
-           data-full="image/Case/Case%20%23003.png" data-title="Case #003"></div>
+    <!-- Case 3: The Ecosystem Conspiracy -->
+    <div class="case-hotspot" style="top: 12.0%; left: 58.4%; width: 13.7%; height: 26.5%;"
+         data-full="image/Case/Case%20%23003.png" data-title="Case #003: The Ecosystem Conspiracy"></div>
 
-      <div class="case-hotspot" style="top: 22%; left: 58.7%; width: 14.8%; height: 32%;"
-           data-full="image/Case/Case%20%23004.png" data-title="Case #004"></div>
+    <!-- Case 4: The Luxury Alibi -->
+    <div class="case-hotspot" style="top: 11.8%; left: 73.2%; width: 13.2%; height: 26.5%;"
+         data-full="image/Case/Case%20%23004.png" data-title="Case #004: The Luxury Alibi"></div>
 
-      <div class="case-hotspot" style="top: 22%; left: 74.8%; width: 14.8%; height: 32%;"
-           data-full="image/Case/Case%20%23005.png" data-title="Case #005"></div>
+    <!-- ROW 2 (Cases 5 - 8) -->
+    <!-- Case 5: The Postmodern Impostors -->
+    <div class="case-hotspot" style="top: 40.5%; left: 19.0%; width: 14.8%; height: 25.5%;"
+         data-full="image/Case/Case%20%23005.png" data-title="Case #005: The Postmodern Impostors"></div>
 
-      <!-- ROW 2 HOTSPOTS (Cases 006 - 009 & The Verdict) -->
-      <div class="case-hotspot" style="top: 59%; left: 10.5%; width: 14.8%; height: 34%;"
-           data-full="image/Case/Case%20%23006.png" data-title="Case #006"></div>
+    <!-- Case 6: The Material Witnesses -->
+    <div class="case-hotspot" style="top: 41.0%; left: 35.0%; width: 16.5%; height: 25.5%;"
+         data-full="image/Case/Case%20%23006.png" data-title="Case #006: The Material Witnesses"></div>
 
-      <div class="case-hotspot" style="top: 59%; left: 26.8%; width: 14.8%; height: 34%;"
-           data-full="image/Case/Case%20%23007.png" data-title="Case #007"></div>
+    <!-- Case 7: The Sustainability Interrogation -->
+    <div class="case-hotspot" style="top: 41.5%; left: 53.0%; width: 17.5%; height: 25.5%;"
+         data-full="image/Case/Case%20%23007.png" data-title="Case #007: The Sustainability Interrogation"></div>
 
-      <div class="case-hotspot" style="top: 59%; left: 42.6%; width: 14.8%; height: 34%;"
-           data-full="image/Case/Case%20%23008.png" data-title="Case #008"></div>
+    <!-- Case 8: The Digital Archive Break-In -->
+    <div class="case-hotspot" style="top: 41.5%; left: 71.8%; width: 15.5%; height: 25.5%;"
+         data-full="image/Case/Case%20%23008.png" data-title="Case #008: The Digital Archive Break-In"></div>
 
-      <div class="case-hotspot" style="top: 59%; left: 58.7%; width: 14.8%; height: 34%;"
-           data-full="image/Case/Case%20%23009.png" data-title="Case #009"></div>
+    <!-- ROW 3 (Case 9 & The Verdict) -->
+    <!-- Case 9: The Human Cost -->
+    <div class="case-hotspot" style="top: 68.5%; left: 22.5%; width: 15.2%; height: 25.0%;"
+         data-full="image/Case/Case%20%23009.png" data-title="Case #009: The Human Cost"></div>
 
-      <div class="case-hotspot" style="top: 57%; left: 74.8%; width: 15.2%; height: 36%;"
-           data-full="image/The%20verdict/The%20verdict.png" data-title="The Verdict"></div>
-    </div>
+    <!-- The Verdict -->
+    <div class="case-hotspot" style="top: 68.5%; left: 38.5%; width: 23.8%; height: 25.0%;"
+         data-full="image/The%20verdict/The%20verdict.png" data-title="Final Verdict: Identity Theft"></div>
   </section>
 
   <!-- Fullscreen Modal Lightbox -->
@@ -317,6 +308,24 @@
     const btnToBoard = document.getElementById('btn-to-board');
     const video = document.getElementById('intro-video');
     const unmuteBtn = document.getElementById('btn-unmute');
+
+    // Force browser playback attempt
+    function triggerVideoPlayback() {
+      video.muted = true;
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.warn("Autoplay blocked by browser. Click anywhere to start:", error);
+        });
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', triggerVideoPlayback);
+    sceneVideo.addEventListener('click', (e) => {
+      if (e.target !== btnToBriefing && e.target !== unmuteBtn) {
+        if (video.paused) video.play();
+      }
+    });
 
     function switchScene(fromScene, toScene) {
       fromScene.classList.remove('active');
@@ -342,7 +351,7 @@
       switchScene(sceneBriefing, sceneInvestigation);
     });
 
-    // Case Hotspot Modal Lightbox
+    // Modal Lightbox for Case Files
     const modal = document.getElementById('file-modal');
     const modalImg = document.getElementById('modal-img');
     const modalCaption = document.getElementById('modal-caption');
